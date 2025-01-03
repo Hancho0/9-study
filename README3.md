@@ -46,3 +46,87 @@ int main() {
 	return 0;
 }
 ```
+
+
+[ Queue.h ]
+
+```ruby
+#pragma once
+class Queue
+{
+private:
+
+	int myQueue[1000] = { 0, };
+	int num = 0; //큐에 담긴 값의 갯수
+	int* firstNum = nullptr; // 첫번째 값의 포인터
+
+public:
+
+	Queue();
+	void Init();
+	void EnQueue(int value);
+	int DeQueue();
+	bool IsEmpty();
+	void Clear();
+	int Count();
+
+};
+```
+
+[ Queue.cpp ]
+
+```ruby
+#include "Queue.h"
+
+Queue::Queue()
+{
+    Init();
+}
+
+void Queue::Init()
+{
+    firstNum = &myQueue[0];
+}
+
+void Queue::EnQueue(int value)
+{
+    myQueue[num++] = value;
+}
+
+int Queue::DeQueue()
+{
+    if (IsEmpty())
+    {
+        return -1;
+    }
+
+    int value = *firstNum;
+
+    for (int i = 0; i < num-1; i++)
+    {
+        myQueue[i] = myQueue[i + 1];
+    }
+
+    num--;
+
+    return value;
+}
+
+bool Queue::IsEmpty()
+{
+    if (num == 0)
+        return true;
+    else
+        return false;
+}
+
+void Queue::Clear()
+{
+    num = 0;
+}
+
+int Queue::Count()
+{
+    return num;
+}
+```

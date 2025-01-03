@@ -130,3 +130,38 @@ int Queue::Count()
     return num;
 }
 ```
+
+[ main ]
+
+```ruby
+#include <iostream>
+#include "Queue.h"
+using namespace std;
+
+int main()
+{
+	Queue queue;
+
+	cout << "비어있는지 체크(0 - false / 1 - true)" << endl;
+	cout << queue.IsEmpty() << endl;
+
+	queue.EnQueue(3);
+	queue.EnQueue(6);
+	queue.EnQueue(9);
+
+	cout << "\nEnqueue하고 비어있는지 체크(0 - false / 1 - true)" << endl;
+	cout << queue.IsEmpty() << endl;
+
+	cout << "\n제일 처음넣은 수 3" << endl;
+	cout <<  queue.DeQueue() << endl;
+
+	cout << "\n두번째 수 6" << endl;
+	cout << queue.DeQueue() << endl;
+	
+	queue.Clear();
+
+	cout << "\n클리어하고 비어있는지 체크(0 - false / 1 - true) " << endl;
+	cout << queue.IsEmpty() << endl;
+	
+}
+```

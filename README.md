@@ -350,3 +350,88 @@ Node* LinkedList::Find(List* list, Node* node)
 
 노드가 있는지 검사하고, 있다면 while문을 돌려 인자값으로 넘긴 노드와 같은 값을 가진 노드가 있는지 탐색한다.<br>
 값이 아니라 완전 같은 노드가 리넡되면 안되므로 조건을 따로 걸어주었다.
+
+------
+
+#다중 연결 리스트
+
+```ruby
+#include <iostream>
+
+using namespace std;
+
+struct NODE 
+{
+	int nData;
+	NODE* Next, *Prev;
+	NODE() {
+		Next = Prev = NULL;
+		nData = 0;
+	}
+	NODE(int i, NODE *Ptr) {
+		nData = i;
+		Prev = Ptr;
+		Next = Ptr->Next;
+		Next->Prev = Prev->Next = this;
+	}
+	void selvDelete() {
+		Prev->Next = Next;
+		Next->Prev = Prev->Next = this;
+		delete this;
+	}
+};
+
+struct DLinkedList {
+	NODE *Head;
+	NODE *Tail;
+	int nCount;
+	DLinkedList() {
+		nCount = 0;
+		Head = new NODE();
+		Tail = new NODE();
+		Head->Next = Tail;
+		Tail->Prev = Head;
+	}
+	~DLinkedList() {
+		while (Head->Next != Tail)
+			Head->Next->selvDelete();
+		delete Head;
+		delete Tail;
+	}
+	void firstInsert(int i) {
+		new NODE(i, Head);
+	}
+	void endInsert(int i) {
+		new NODE(i, Tail->Prev);
+	}
+	void firstDelete() {
+		if (Head->Next == Tail) return;
+		Head->Next->selvDelete();
+	}
+	void endDelete() {
+		if (Tail->Prev == Head) return;
+		Tail->Prev->selvDelete();
+	}
+	void printAll() {
+		NODE *Tmp = Head;
+		while (Tmp->Next != Tail) {
+			cout << Tmp->Next->nData << endl;
+			Tmp = Tmp->Next;
+		}
+	}
+};
+
+int main() {
+	DLinkedList *List = new DLinkedList();
+	List->firstInsert(1);
+	List->firstInsert(3);
+	List->firstInsert(5);
+	List->firstDelete();
+	List->endInsert(100);
+	List->endInsert(200);
+	List->endInsert(300);
+	List->endDelete();
+	List->printAll();
+	delete List;
+}
+```

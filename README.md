@@ -435,3 +435,171 @@ int main() {
 	delete List;
 }
 ```
+
+```ruby
+#include <iostream>
+using namespace std;
+
+struct NODE
+{
+	int nData;
+	NODE *Next;
+};
+
+class LinkedList {
+	NODE *Head;
+
+public:
+	LinkedList() : Head(NULL) {}
+
+	void InsertFirst(int Value) {
+		NODE *NewNode = new NODE();
+		NewNode->nData = Value;
+		NewNode->Next = Head;
+		Head = NewNode;
+	}
+
+	void InsertLast(int Value) {
+		NODE *NewNode = new NODE();
+		NewNode->nData = Value;
+		NewNode->Next = NULL;
+
+		if (!Head) {
+			Head = NewNode;
+			return;
+		}
+
+		NODE *Temp = Head;
+		while (Temp->Next)
+		{
+			Temp = Temp->Next;
+		}
+
+		Temp->Next = NewNode;
+	}
+
+	void InsertPosition(int Value, int Position) {
+		if (Position < 1) {
+			cout << "위치가 1보다는 커야합니다." << endl;
+			return;
+		}
+
+		if (Position == 1) {
+			InsertFirst(Value);
+			return;
+		}
+
+		NODE *NewNode = new NODE();
+		NewNode->nData = Value;
+
+		NODE *Temp = Head;
+		for (int i = 1; i < Position - 1 && Temp; ++i) {
+			Temp = Temp->Next;
+		}
+
+		if (!Temp) {
+			cout << "위치가 범위를 벗어났습니다." << endl;
+			delete NewNode;
+			return;
+		}
+
+		NewNode->Next = Temp->Next;
+		Temp->Next = NewNode;
+	}
+
+	void DeleteFirst() {
+		if (!Head) {
+			cout << "리스트가 비어있습니다." << endl;
+			return;
+		}
+
+		NODE *Temp = Head;
+		Head = Head->Next;
+		delete Temp;
+	}
+
+	void DeleteLast() {
+		if (!Head) {
+			cout << "리스트가 비었습니다." << endl;
+			return;
+		}
+
+		if (!Head->Next) {
+			delete Head;
+			Head = NULL;
+			return;
+		}
+
+		NODE *Temp = Head;
+		while (Temp->Next->Next) {
+			Temp = Temp->Next;
+		}
+
+		delete Temp->Next;
+		Temp->Next = NULL;
+	}
+
+	void DeletePositon(int Position) {
+		if (Position < 1) {
+			cout << "위치가 1보다는 커야합니다." << endl;
+			return;
+		}
+
+		if (Position == 1) {
+			DeleteFirst();
+			return;
+		}
+
+		NODE *Temp = Head;
+		for (int i = 1; i < Position - 1 && Temp; ++i) {
+			Temp = Temp->Next;
+		}
+
+		if (!Temp || !Temp->Next) {
+			cout << "위치가 범위를 벗어났습니다." << endl;
+		}
+
+		NODE *NodeToDelete = Temp->Next;
+		Temp->Next = Temp->Next->Next;
+		delete NodeToDelete;
+	}
+
+	void Display() {
+		if (!Head) {
+			cout << "리스트가 비어있습니다." << endl;
+			return;
+		}
+
+		NODE *Temp = Head;
+		while (Temp) {
+			cout << Temp->nData << " -> ";
+			Temp = Temp->Next;
+		}
+		cout << "NULL" << endl;
+	}
+};
+
+int main() {
+	LinkedList List;
+
+	List.InsertLast(10);
+	List.InsertLast(20);
+
+	List.InsertFirst(5);
+
+	List.InsertPosition(3, 3);
+
+	List.Display();
+
+	List.DeleteFirst();
+	List.Display();
+
+	List.DeleteLast();
+	List.Display();
+
+	List.DeletePositon(2);
+	List.Display();
+
+	return 0;
+}
+```

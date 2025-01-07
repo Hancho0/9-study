@@ -87,3 +87,177 @@ int main() {
 	return 0;
 }
 ```
+
+```ruby
+#include <iostream>
+
+using namespace std;
+
+const int SIZE = 100;
+
+class Stack {
+public:
+	Stack() { Top = -1; }
+	void Push();
+	int Pop();
+	int isFull();
+	int isEmpty();
+	void printError(const char *msg);
+private:
+	int Arr[SIZE];
+	int Top;
+};
+
+void Stack::Push() {
+	Top += 1;
+	if (isFull()) {
+		Top -= 1;
+		printError("함수가 포화상태입니다.");
+	}
+	else{
+		int nItem;
+		cout << "정수 : " << endl;
+		cin >> nItem;
+		Arr[Top] = nItem;
+	}
+}
+
+int Stack::Pop() {
+	if (isEmpty()) {
+		printError("스택이 비었습니다.");
+		return false;
+	}
+	else
+		return Arr[Top--];
+}
+
+int Stack::isFull() {
+	return Top >= SIZE ? true : false;
+}
+
+int Stack::isEmpty() {
+	return Top == -1 ? true : false;
+}
+
+void Stack::printError(const char *msg) {
+	cout << "----- " << msg << "-----" << endl << endl;
+}
+
+int main(void) {
+
+	Stack stack;
+
+	while (1) {
+		int nInput;
+		cout << "[push: 1  pop: 2  exit: 3]";
+		cin >> nInput;
+
+		if (nInput == 1) {
+			stack.Push();
+			cout << endl;
+		}
+		else if (nInput == 2) {
+			int nBuff = stack.Pop();
+			if (nBuff)
+				cout << "Pop: " << nBuff << endl << endl;
+		}
+		else {
+			break;
+		}
+	}
+	return 0;
+
+}
+```
+
+```ruby
+#include <iostream>
+using namespace std;
+
+template<typename T> class Stack {
+private:
+	T* Arr;
+	unsigned int m_Capacity;
+	unsigned int m_Size;
+
+public:
+	Stack() {
+		m_Capacity = 3;
+		m_Size = 0;
+		Arr = new T[m_Capacity];
+	}
+
+	~Stack() {
+		if (Arr != NULL) delete[] Arr;
+	}
+
+	void ReSize() {
+		m_Capacity *= 2;
+		T *Tmp = new T[m_Size];
+		for (int i = 0; i < m_Size; i++) Tmp[i] = Arr[i];
+
+		delete[] Arr;
+		Arr = new T[m_Capacity];
+		for (int i = 0; i < m_Size; i++) Arr[i] = Tmp[i];
+		delete[] Tmp;
+		Tmp = nullptr;
+	}
+
+	void Push(T Data) {
+		if (m_Size >= m_Capacity) {
+			ReSize();
+		}
+
+		Arr[m_Size++] = Data;
+	}
+
+	T Pop() {
+		if (m_Size)
+			return Arr[--m_Size];
+		else
+			throw out_of_range("스택이 비어있습니다.");
+	}
+
+	T Top() {
+		if (m_Size)
+			return Arr[m_Size - 1];
+		else
+			throw out_of_range("스택이 비어있습니다.");
+	}
+
+	T Capacity() {
+		return m_Capacity;
+	}
+
+	T Size() {
+		return m_Size;
+	}
+
+	bool Empty() {
+		return m_Size == 0 ? true : false;
+	}
+};
+
+int main() {
+	Stack<int> stack;
+
+	stack.Push(10);
+	stack.Push(20);
+	stack.Push(30);
+
+	cout << "스택 Top: " << stack.Top() << endl;         
+	cout << "스택 Size: " << stack.Size() << endl;       
+	cout << "스택 Capacity: " << stack.Capacity() << endl; 
+
+	stack.Push(40);  
+	cout << "스택 Size (추가 후): " << stack.Size() << endl;        
+	cout << "스택 Capacity (추가 후): " << stack.Capacity() << endl; 
+
+	cout << "Pop: " << stack.Pop() << endl;
+	cout << "Pop: " << stack.Pop() << endl; 
+
+	cout << "스택이 비었나요? " << (stack.Empty() ? "Yes" : "No") << endl;
+
+	return 0;
+}
+```

@@ -165,3 +165,104 @@ int main()
 	
 }
 ```
+
+
+
+```ruby
+#include<iostream>
+
+const int MAXValue = 101;
+
+using namespace std;
+
+template<class T> class Queue
+{
+public:
+	int Front;
+	int Rear;
+	int nSize;
+	T *Values;
+
+	Queue()
+	{
+		nSize = MAXValue;
+		Values = new T[nSize];
+		Front = 0;
+		Rear = 0;
+	}
+	~Queue()
+	{
+		delete[] Values;
+	}
+
+	void Push(T Value)
+	{
+		if (!isFull())
+		{
+			Values[Rear] = Value;
+			Rear = (Rear + 1) % nSize;
+		}
+		else
+			cout << "큐가 꽉 찼습니다." << endl;
+	}
+
+	void Pop()
+	{
+		if (!empty())
+			Front = (Front + 1) % nSize;
+		else
+			cout << "큐가 비어있습니다." << endl;
+	}
+
+	bool empty()
+	{
+		if (Rear == Front)
+			return true;
+		else
+			return false;
+	}
+
+	bool isFull()
+	{
+		if ((Rear + 1) % nSize == Front)
+			return true;
+		else
+			return false;
+	}
+};
+
+template<typename T>
+ostream& operator <<(ostream &out, Queue<T> &q) {
+	T *Temp = q.Values;
+	out << "front [ ";
+	for (int i = q.Front; i < q.Rear; i++) {
+		out << Temp[i];
+		if (i < q.Rear - 1) out << " | ";
+	}
+	out << " ] rear" << endl;
+	return out;
+}
+
+int main()
+{
+	Queue<int> q;
+	q.Push(3);
+	cout << q;
+	q.Push(103);
+	cout << q;
+	q.Push(57);
+	cout << q;
+	q.Pop();
+	cout << q;
+	q.Push(22);
+	cout << q;
+	q.Pop();
+	cout << q;
+	q.Pop();
+	cout << q;
+	q.Pop();
+	cout << q;
+	q.Pop();
+	cout << q;
+}
+```
